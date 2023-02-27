@@ -3,7 +3,9 @@ import './App.css'
 
 function App () {
   const [enabled, setEnabled] = useState(false)
-  const [position, setPosition] = useState({ x: 0, y: 0 })
+  const [position, setPosition] = useState({ x: -25, y: -25 })
+  const [color, setColor] = useState('0, 0, 0, 0.5')
+  const [isHovering, setIsHovering] = useState(false)
 
   useEffect(() => {
     // console.log('efecto', { enabled })
@@ -23,25 +25,64 @@ function App () {
     }
   }, [enabled])
 
+  useEffect(() => {
+    const randomColor = () => {
+      const red = Math.floor(Math.random() * 256)
+      const green = Math.floor(Math.random() * 256)
+      const blue = Math.floor(Math.random() * 256)
+      setColor({ r: red, g: green, b: blue })
+    }
+
+    if (enabled && isHovering) {
+      window.addEventListener('mouseover', randomColor)
+    }
+    return () => {
+      window.removeEventListener('mouseover', randomColor)
+    }
+  }, [enabled, isHovering])
+
+  const handleClick = () => {
+    setEnabled(!enabled)
+  }
+  const handleMouseOver = () => {
+    setIsHovering(true)
+  }
+  const handleMouseOut = () => {
+    setIsHovering(false)
+  }
+
   return (
-    <main>
-      <div style={{
-        position: 'absolute',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        border: '1px solid #fff',
-        borderRadius: '50%',
-        opacity: 0.8,
-        pointerEvents: 'none',
-        left: -25,
-        top: -25,
-        width: 50,
-        height: 50,
-        transform: `translate(${position.x}px, ${position.y}px)`
-      }}
+    <main style={{ display: 'flex', justifyContent: 'space-between' }}>
+      <div
+        style={{
+          position: 'absolute',
+          backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b})`,
+          border: '1px solid #fff',
+          borderRadius: '50%',
+          opacity: 0.8,
+          pointerEvents: 'none',
+          left: -25,
+          top: -25,
+          width: 50,
+          height: 50,
+          transform: `translate(${position.x}px, ${position.y}px)`
+        }}
       />
-      <button onClick={() => setEnabled(!enabled)}>
-        {enabled ? 'Desactivar' : 'Activar'} Seguir puntero
-      </button>
+      <div className='bt-section'>
+        <button>
+          Cambia de tamaño
+        </button>
+        <button onClick={handleClick} className='btn bt-activar'>
+          {enabled ? 'Desactivar' : 'Activar'}  Seguir Puntero
+        </button>
+
+        <button
+          onMouseOver={handleMouseOver}
+          onMouseOut={handleMouseOut}
+        >
+          Cambia de color
+        </button>
+      </div>
     </main>
   )
 }
