@@ -77,11 +77,25 @@ main{
   display: flex;
   justify-content: space-between;
 }
-.bt-section{
+.bt-section1{
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10rem;
+}
+.bt-section2{
   height: 100%;
   width: 100%;
   display: flex;
   justify-content: space-between;
-  gap: 2rem
+  gap: 20rem
+}
+.bt-section3{
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 10rem;
 }
 
